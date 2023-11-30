@@ -2,6 +2,23 @@
 const mongoose = require("mongoose"); 
 
 const userSchema = new mongoose.Schema({
+
+    followers : {
+        type : [String], 
+        default :  []
+    }, 
+    followings : {
+        type : [String], 
+        default :   [] 
+    }, 
+    likes : {
+        type : [String], 
+        default :   []
+    }, 
+    bio : {
+        type : String, 
+        default : ""
+    },
      profilePicture :{
         type : String 
      },
@@ -29,10 +46,7 @@ const userSchema = new mongoose.Schema({
 
     },
 
-    photo : {
-        type : String ,
-        default : ""
-    },
+
  
      
    

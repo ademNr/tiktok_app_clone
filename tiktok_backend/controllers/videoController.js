@@ -2,7 +2,7 @@
 const Video = require('../models/videoModel');
 const path = require("path");
 
-
+// video updoad ; req.file : video
 const uploadVideo = async(req, res) => {
     try {
         if (!req.file) {
@@ -13,7 +13,9 @@ const uploadVideo = async(req, res) => {
         const newVideo = new Video({
             name: req.file.originalname,
             filePath: req.file.path,
-            userId : req.params.userId
+            userId : req.params.userId, 
+            likes : req.body.likes , 
+            comments  :  req.body.comments
         });
 
         await newVideo.save();
@@ -47,7 +49,7 @@ const getUserVideos = async(req, res) => {
 const getVideos = async(req, res) => {
     try {
         const videos = await Video.find();
-        res.status(200).json({ message: 'Videos retrieved successfully.', data: videos });
+        res.status(200).json({ data: videos });
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'An error occurred while retrieving videos.' });

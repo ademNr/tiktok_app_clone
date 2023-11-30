@@ -1,2 +1,2 @@
-./tiktok_backend/node_modules
-./tiktok_backend/node_modules/.env
+node_modules
+.env

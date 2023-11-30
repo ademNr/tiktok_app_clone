@@ -3,46 +3,49 @@ const User = require("../models/userModel");
 const bcrypt = require("bcrypt"); 
 
 // register function
-const register = async (req,res)=>{
+const register = async (req, res) => {
     try {
-        const { email, fullName, userName, password } = req.body;
-    
-        // Check if the user already exists
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
-          return res.status(400).json({ error: 'User already exists', success : false });
-        }
-    
-        // Hash the password
-        const hashedPassword = await bcrypt.hash(password, 10);
-        
-        const profilePicture = req.files ? req.files.profilePicture : null;
-
-        if (profilePicture) {
-            const filename = userName + '_' + profilePicture.name; // Utiliser le nom original du fichier
-            console.log(filename)
-            await profilePicture.mv(`upload/${filename}`);
-            User.profilePicture = `upload/${filename}`;
-            console.log(User.profilePicture)
-        }
-        // Create a new user
-        const newUser = new User({
-          email,
-          fullName,
-          userName,
-          password: hashedPassword,
-          profilePicture : profilePicture ? `${User.profilePicture}` : null,
-        });
-    
-        // Save the user to the database
-        await newUser.save();
-    
-        return res.status(201).json({ message: 'User registered successfully' , success : true});
-      } catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: 'Internal server error', success : false });
+      const { email, fullName, userName, password } = req.body;
+  
+      // Check if the user already exists
+      const existingUser = await User.findOne({ email });
+      if (existingUser) {
+        return res.status(400).json({ error: 'User already exists', success: false });
       }
-}
+  
+      // Hash the password
+      const hashedPassword = await bcrypt.hash(password, 10);
+  
+      // Handle profile picture
+      let profilePicturePath = '';
+      const profilePicture = req.files ? req.files.profilePicture : null;
+  
+      if (profilePicture) {
+        const filename = userName + '_' + profilePicture.name;
+        console.log(filename);
+        await profilePicture.mv(`upload/${filename}`);
+        profilePicturePath = `upload/${filename}`;
+      }
+  
+      // Create a new user
+      const newUser = new User({
+        email,
+        fullName,
+        userName,
+        password: hashedPassword,
+        profilePicture: profilePicturePath,
+      });
+  
+      // Save the user to the database
+      await newUser.save();
+  
+      return res.status(201).json({ message: 'User registered successfully', success: true });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: 'Internal server error', success: false });
+    }
+  };
+  
 
 // login function 
  const login = async (req,res)=>{

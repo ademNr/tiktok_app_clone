@@ -8,6 +8,9 @@ const multer = require("multer") ;
  // multer video upload configs
  const storageV = multer.diskStorage({
     destination: './videos',
+    limits: {
+        fileSize: 1000000,
+      },
     filename: function(req, file, cb) {
         cb(null, file.originalname);
     }
@@ -22,7 +25,7 @@ const upload = multer({
 });
 
 
-router.post('/url/upload/:userId', upload.single('video'), videoController.uploadVideo);
+router.post('/upload-video/:userId', upload.single('video'), videoController.uploadVideo);
 router.get('/videos', videoController.getVideos);
 router.get('/videos/:name', videoController.getVideoByName);
 router.delete('/videos/:name', videoController.deleteVideoByName);

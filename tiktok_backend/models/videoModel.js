@@ -4,6 +4,8 @@ const Schema = mongoose.Schema;
 
 const VideoSchema = new Schema({
     userId : {type : String } , 
+    likes : {type : [String]}, 
+    comments : {type : [String]}, 
     name: { type: String, required: true },
     filePath: { type: String, required: true },
     createdAt: { type: Date, default: Date.now },

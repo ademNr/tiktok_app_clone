@@ -6,9 +6,13 @@ const router = express.Router();
 router.get("/user/:userId", userController.getUserById);
 
 // get user profile picture
-router.get("/user-picture" , userController.getUserProfilePicture); 
+router.get("/user-picture/:userId" , userController.getUserProfilePicture); 
 
-// update user profile
+// update user profile pic
+router.put("/user-picture/:userId", userController.updateUserProfilePicture ); 
+
+// update all user fields
+router.put("/user/:userId", userController.updateUserFields);
 
 
 
